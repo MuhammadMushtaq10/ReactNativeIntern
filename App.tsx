@@ -1,131 +1,197 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {Component, useEffect, useState} from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
+  Button,
   Text,
-  useColorScheme,
   View,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
-
+import Loginpage from './components/screens/Loginpage';
+import styles from './components/screens/styles';
+import Signup from './components/screens/Signup';
+import Start from './components/screens/Start';
+import ForgotPassword from './components/screens/ForgotPassword';
+import Passwordpage from './components/screens/Passwordpage';
+import Home from './components/screens/Home';
+import ForgotpasswordEmail from './components/screens/ForgotpasswordEmail';
+import ForgotpasswordSMS from './components/screens/ForgotpasswordSMS';
+import Newpassword from './components/screens/Newpassword';
+import Cart from './components/screens/Cart';
+import Wishlist from './components/screens/Wishlist';
+import Profile from './components/screens/Profile';
+import Setting from './components/screens/settings/Setting';
+import Unknown from './components/screens/Unknown';
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import Vouchers from './components/screens/vouchers/Vouchers';
+import ProductDetail from './components/screens/ProductDetail/ProductDetail';
+import Reviews from './components/screens/Reviews/index';
+import SeeAllitems from './components/screens/SeeAllitems';
+import EditAddress from './components/screens/Editaddress';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function HomeStackScreen() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+      <HomeStack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomeStack.Screen
+        name="Reviews"
+        component={Reviews}
+        options={{headerShown: false}}
+      />
+    </HomeStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarIcon: ({color, size}) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'home-outline';
+          } else if (route.name === 'Wishlist') {
+            iconName = 'heart-outline';
+          } else if (route.name === 'Cart') {
+            iconName = 'cart-outline';
+          } else if (route.name === 'Profile') {
+            iconName = 'person-outline';
+          }
+
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#007bff',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+      <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen name="Wishlist" component={Wishlist} />
+      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
+  );
+}
+
+const App = () => {
+  return (
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="MainTabs">
+          <Stack.Screen
+            name="Start"
+            component={Start}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Loginpage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Password"
+            component={Passwordpage}
+            options={{headerShown: false}}
+          />
+
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForgetpasswordEmail"
+            component={ForgotpasswordEmail}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForgetPasswordSMS"
+            component={ForgotpasswordSMS}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="NewPassword"
+            component={Newpassword}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="settings"
+            component={Setting}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="vouchers"
+            component={Vouchers}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ProductDetail"
+            component={ProductDetail}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SeeAllitems"
+            component={SeeAllitems}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="EditAddress"
+            component={EditAddress}
+            options={{headerShown: false}}
+          />
+          {
+            <Stack.Screen
+              name="Reviews"
+              component={Reviews}
+              options={{headerShown: false}}
+            />
+          }
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+};
 
 export default App;
