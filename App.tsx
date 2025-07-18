@@ -39,7 +39,7 @@ import ProductDetail from './components/screens/ProductDetail/ProductDetail';
 import Reviews from './components/screens/Reviews/index';
 import SeeAllitems from './components/screens/SeeAllitems';
 import EditAddress from './components/screens/Editaddress';
-
+import ProductVariations from './components/screens/ProductVariation';
 
 const Stack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -104,7 +104,7 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainTabs">
+        <Stack.Navigator /*initialRouteName="MainTabs"*/>
           <Stack.Screen
             name="Start"
             component={Start}
@@ -179,6 +179,11 @@ const App = () => {
           <Stack.Screen
             name="EditAddress"
             component={EditAddress}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ProductVariation"
+            component={ProductVariations}
             options={{headerShown: false}}
           />
           {

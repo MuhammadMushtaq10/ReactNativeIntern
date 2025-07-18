@@ -105,7 +105,7 @@ const ProductDetail = ({route}) => {
               {product.variations2}
             </Text>
 
-            <TouchableOpacity style={ProductDetailstyle.ViewAllButton}>
+            <TouchableOpacity style={ProductDetailstyle.ViewAllButton} onPress={() => navigation.navigate('ProductVariation')}>
               <Image source={require('../../Logos/Export.png')}></Image>
             </TouchableOpacity>
           </View>

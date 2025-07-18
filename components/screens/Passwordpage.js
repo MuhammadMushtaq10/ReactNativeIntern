@@ -14,9 +14,23 @@ import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const stack = createNativeStackNavigator();
-const Passwordpage = ({navigation}) => {
+const Passwordpage = ({route, navigation}) => {
   const [password, Setpassword] = useState('');
   const [IsPasswordSecure, SetIsPasswordSecure] = useState(true);
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
+        email,
+        password,
+      });
+
+      Alert.alert('Success', 'Logged in');
+    } catch (err) {
+      console.error('Login failed:', err);
+      Alert.alert('Error', err.response?.data?.message || 'Login failed');
+    }
+  };
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 1, position: 'absolute', top: -1}}>
@@ -30,9 +44,7 @@ const Passwordpage = ({navigation}) => {
           source={require('../Logos/artist-21.png')}></Image>
       </View>
       <View style={{position: 'absolute', top: 320, right: 100}}>
-        <Text style={{fontSize: 28, fontWeight: 'bold'}}>
-          Hello, Madison!!{' '}
-        </Text>
+        <Text style={{fontSize: 28, fontWeight: 'bold'}}></Text>
       </View>
       <View style={{position: 'absolute', top: 400, right: 120}}>
         <Text style={{fontSize: 19}}>Type your password</Text>
